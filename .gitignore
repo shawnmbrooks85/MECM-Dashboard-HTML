@@ -1,0 +1,30 @@
+# ── Sensitive ──────────────────────────
+*Git-Hub*.txt
+*.pem
+*.key
+*.env
+.env.*
+
+# ── Temp scripts ──────────────────────
+github_setup.ps1
+
+# ── OS / Editor ───────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# ── Logs ──────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Dependencies ──────────────────────
+node_modules/
+
+# ── Build artifacts ───────────────────
+dist/
+build/

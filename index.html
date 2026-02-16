@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MECM — Environment Health</title>
+  <meta name="description" content="Unified MECM/SCCM environment health dashboard">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <!-- ═══ Header ═══ -->
+  <header class="dashboard-header">
+    <div class="header-left">
+      <div class="header-logo">M</div>
+      <div>
+        <div class="header-title">MECM HEALTH</div>
+        <div class="header-subtitle">Environment Overview</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="header-badge badge-mock">MOCK DATA</span>
+      <div class="refresh-info">
+        <span class="refresh-dot"></span>
+        <span>LAST REFRESH: <span id="lastRefresh">—</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+
+    <!-- ═══ Overall Health Ring + Score Cards ═══ -->
+    <section class="dashboard-section fade-in" id="section-scores">
+      <div style="display:grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: start;">
+
+        <!-- Ring -->
+        <div class="glass-card stat-card"
+          style="display:flex;flex-direction:column;align-items:center;padding:16px 12px;">
+          <div class="health-ring">
+            <svg viewBox="0 0 128 128">
+              <circle class="health-ring-bg" cx="64" cy="64" r="56" />
+              <circle class="health-ring-fill" id="overallRingFill" cx="64" cy="64" r="56" />
+            </svg>
+            <div class="health-ring-center">
+              <div class="health-ring-value" id="overallScore">—</div>
+              <div class="health-ring-label">HEALTH</div>
+            </div>
+          </div>
+          <span class="pill pill-amber" id="overallRiskPill" style="margin-top:8px;">—</span>
+        </div>
+
+        <!-- Score cards -->
+        <div class="health-scores" id="healthScoreCards"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ═══ Security & Risk Findings ═══ -->
+    <section class="dashboard-section fade-in" id="section-security">
+      <div class="section-header">
+        <div class="section-icon">🛡</div>
+        <div>
+          <div class="section-title">Security & Risk Findings</div>
+          <div class="section-desc">Critical items requiring attention</div>
+        </div>
+      </div>
+      <div class="glass-card security-alerts">
+        <div class="alert-list" id="alertList"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ═══ Client Health ═══ -->
+    <section class="dashboard-section fade-in" id="section-clients">
+      <div class="section-header">
+        <div class="section-icon">💻</div>
+        <div>
+          <div class="section-title">Client Health</div>
+          <div class="section-desc">Device activity, health status, and OS distribution</div>
+        </div>
+      </div>
+      <div class="section-grid grid-3col">
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">DEVICE SUMMARY</div>
+          </div>
+          <div id="clientDeviceSummary"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">CLIENT ACTIVITY</div>
+          </div>
+          <div id="clientActivity"><!-- JS --></div>
+          <div style="margin-top:12px;">
+            <div class="stat-card-title" style="margin-bottom:8px;">7-DAY HEALTH TREND</div>
+            <div class="chart-container short"><canvas id="chartClientTrend"></canvas></div>
+          </div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">OS DISTRIBUTION</div>
+          </div>
+          <div class="chart-container"><canvas id="chartOsDist"></canvas></div>
+        </div>
+        <div class="glass-card stat-card full-width">
+          <div class="stat-card-header">
+            <div class="stat-card-title">TOP ISSUES</div>
+          </div>
+          <div id="clientTopIssues"><!-- JS --></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Content Distribution ═══ -->
+    <section class="dashboard-section fade-in" id="section-content">
+      <div class="section-header">
+        <div class="section-icon">📦</div>
+        <div>
+          <div class="section-title">Content Distribution</div>
+          <div class="section-desc">Distribution point health, packages, and trends</div>
+        </div>
+      </div>
+      <div class="section-grid grid-3col">
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">DP STATUS</div>
+          </div>
+          <div id="dpSummary"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">CONTENT BY TYPE</div>
+          </div>
+          <div class="chart-container"><canvas id="chartContentType"></canvas></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">DISTRIBUTION TREND</div>
+          </div>
+          <div class="chart-container"><canvas id="chartDistTrend"></canvas></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">DP GROUP COMPLIANCE</div>
+          </div>
+          <div id="dpGroupTable"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card" style="grid-column: span 2;">
+          <div class="stat-card-header">
+            <div class="stat-card-title">FAILED PACKAGES</div>
+          </div>
+          <div id="failedPackages"><!-- JS --></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Software Update Compliance ═══ -->
+    <section class="dashboard-section fade-in" id="section-compliance">
+      <div class="section-header">
+        <div class="section-icon">🔒</div>
+        <div>
+          <div class="section-title">Software Update Compliance</div>
+          <div class="section-desc">Patch coverage, missing updates, and scan status</div>
+        </div>
+      </div>
+      <div class="section-grid grid-3col">
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">COMPLIANCE OVERVIEW</div>
+          </div>
+          <div id="complianceOverview"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">MISSING BY SEVERITY</div>
+          </div>
+          <div class="chart-container"><canvas id="chartMissingSeverity"></canvas></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">COMPLIANCE TREND</div>
+          </div>
+          <div class="chart-container"><canvas id="chartComplianceTrend"></canvas></div>
+        </div>
+        <div class="glass-card stat-card full-width">
+          <div class="stat-card-header">
+            <div class="stat-card-title">TOP MISSING UPDATES</div>
+          </div>
+          <div id="topMissingUpdates"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card full-width">
+          <div class="stat-card-header">
+            <div class="stat-card-title">COMPLIANCE BY COLLECTION</div>
+          </div>
+          <div id="complianceByCollection"><!-- JS --></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Software Update Deployments ═══ -->
+    <section class="dashboard-section fade-in" id="section-deployments">
+      <div class="section-header">
+        <div class="section-icon">🚀</div>
+        <div>
+          <div class="section-title">Software Update Deployments</div>
+          <div class="section-desc">Active deployments and error analysis</div>
+        </div>
+      </div>
+      <div class="section-grid grid-2-1">
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">ACTIVE DEPLOYMENTS</div>
+            <div class="stat-card-badge pill pill-amber" id="pendingRestartsBadge">—</div>
+          </div>
+          <div id="deploymentList" style="max-height:500px;overflow-y:auto;"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">ERROR ANALYSIS</div>
+          </div>
+          <div id="errorCodes"><!-- JS --></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Edge Management ═══ -->
+    <section class="dashboard-section fade-in" id="section-edge">
+      <div class="section-header">
+        <div class="section-icon">🌐</div>
+        <div>
+          <div class="section-title">Microsoft Edge Management</div>
+          <div class="section-desc">Browser deployment, versions, and vulnerabilities</div>
+        </div>
+      </div>
+      <div class="section-grid grid-3col">
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">EDGE OVERVIEW</div>
+          </div>
+          <div id="edgeOverview"><!-- JS --></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">VERSION DISTRIBUTION</div>
+          </div>
+          <div class="chart-container tall"><canvas id="chartEdgeVersions"></canvas></div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-card-header">
+            <div class="stat-card-title">DEFAULT BROWSER</div>
+          </div>
+          <div class="chart-container"><canvas id="chartDefaultBrowser"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

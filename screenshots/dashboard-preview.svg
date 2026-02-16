@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00c853"/>
+      <stop offset="100%" stop-color="#00e676"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e65100"/>
+      <stop offset="100%" stop-color="#ffab40"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d50000"/>
+      <stop offset="100%" stop-color="#ff5252"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowBig">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="700" fill="#0b0e11"/>
+  <!-- Ambient glow -->
+  <ellipse cx="180" cy="35" rx="300" ry="200" fill="#00e5ff" opacity="0.02"/>
+  <ellipse cx="1020" cy="665" rx="300" ry="200" fill="#00e676" opacity="0.015"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="44" fill="#0b0e11" opacity="0.95"/>
+  <rect x="0" y="43" width="1200" height="1" fill="white" opacity="0.06"/>
+  <!-- Logo -->
+  <rect x="20" y="8" width="28" height="28" rx="3" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="34" y="28" font-family="monospace" font-size="14" font-weight="800" fill="#00e5ff" text-anchor="middle" filter="url(#glow)">M</text>
+  <!-- Title -->
+  <text x="60" y="22" font-family="monospace" font-size="12" font-weight="700" fill="white" fill-opacity="0.92" letter-spacing="2">MECM HEALTH</text>
+  <text x="60" y="34" font-family="monospace" font-size="8" fill="white" fill-opacity="0.3" letter-spacing="1">ENVIRONMENT OVERVIEW</text>
+  <!-- Badge -->
+  <rect x="1010" y="12" width="70" height="20" rx="3" fill="#b388ff" fill-opacity="0.15" stroke="#b388ff" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="1045" y="26" font-family="monospace" font-size="8" font-weight="600" fill="#b388ff" text-anchor="middle" letter-spacing="1">MOCK DATA</text>
+  <!-- Refresh -->
+  <circle cx="1100" cy="22" r="3" fill="#00e676" filter="url(#glow)"/>
+  <text x="1110" y="25" font-family="monospace" font-size="8" fill="white" fill-opacity="0.3" letter-spacing="0.5">LIVE</text>
+
+  <!-- Health Ring -->
+  <rect x="20" y="56" width="140" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <circle cx="90" cy="126" r="48" fill="none" stroke="white" stroke-opacity="0.06" stroke-width="7"/>
+  <circle cx="90" cy="126" r="48" fill="none" stroke="#ffab40" stroke-width="7" stroke-dasharray="235 301" stroke-linecap="round" transform="rotate(-90 90 126)" filter="url(#glow)"/>
+  <text x="90" y="132" font-family="monospace" font-size="22" font-weight="800" fill="#ffab40" text-anchor="middle" filter="url(#glow)">78</text>
+  <text x="90" y="146" font-family="monospace" font-size="7" fill="white" fill-opacity="0.3" text-anchor="middle" letter-spacing="2">HEALTH</text>
+  <rect x="58" y="182" width="64" height="18" rx="3" fill="#ffab40" fill-opacity="0.15"/>
+  <text x="90" y="195" font-family="monospace" font-size="7" font-weight="700" fill="#ffab40" text-anchor="middle" letter-spacing="1">MEDIUM RISK</text>
+
+  <!-- Score Cards -->
+  <!-- Card 1: Client Health -->
+  <rect x="175" y="56" width="193" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <rect x="175" y="56" width="193" height="2" rx="1" fill="#00e676" filter="url(#glow)"/>
+  <text x="195" y="80" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">💻 CLIENT HEALTH</text>
+  <text x="195" y="112" font-family="monospace" font-size="24" font-weight="800" fill="#00e676" filter="url(#glow)">91.2%</text>
+  <text x="195" y="130" font-family="monospace" font-size="9" fill="white" fill-opacity="0.3">4,102 / 4,502 healthy</text>
+  <rect x="195" y="145" width="46" height="16" rx="3" fill="#00e676" fill-opacity="0.15"/>
+  <text x="218" y="157" font-family="monospace" font-size="8" font-weight="600" fill="#00e676" text-anchor="middle">▲ +2.1%</text>
+
+  <!-- Card 2: Content Dist -->
+  <rect x="380" y="56" width="193" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <rect x="380" y="56" width="193" height="2" rx="1" fill="#ffab40" filter="url(#glow)"/>
+  <text x="400" y="80" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">📦 CONTENT DIST.</text>
+  <text x="400" y="112" font-family="monospace" font-size="24" font-weight="800" fill="#ffab40" filter="url(#glow)">88.5%</text>
+  <text x="400" y="130" font-family="monospace" font-size="9" fill="white" fill-opacity="0.3">23/25 DPs healthy</text>
+  <rect x="400" y="145" width="46" height="16" rx="3" fill="#00e676" fill-opacity="0.15"/>
+  <text x="423" y="157" font-family="monospace" font-size="8" font-weight="600" fill="#00e676" text-anchor="middle">▲ +0.4%</text>
+
+  <!-- Card 3: Patch Compliance -->
+  <rect x="585" y="56" width="193" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <rect x="585" y="56" width="193" height="2" rx="1" fill="#ffab40" filter="url(#glow)"/>
+  <text x="605" y="80" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">🔒 PATCH COMPLIANCE</text>
+  <text x="605" y="112" font-family="monospace" font-size="24" font-weight="800" fill="#ffab40" filter="url(#glow)">72.8%</text>
+  <text x="605" y="130" font-family="monospace" font-size="9" fill="white" fill-opacity="0.3">3,279 / 4,502 compliant</text>
+  <rect x="605" y="145" width="46" height="16" rx="3" fill="#00e676" fill-opacity="0.15"/>
+  <text x="628" y="157" font-family="monospace" font-size="8" font-weight="600" fill="#00e676" text-anchor="middle">▲ +4.6%</text>
+
+  <!-- Card 4: Deployments -->
+  <rect x="790" y="56" width="193" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <rect x="790" y="56" width="193" height="2" rx="1" fill="#ffab40" filter="url(#glow)"/>
+  <text x="810" y="80" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">🚀 DEPLOYMENTS</text>
+  <text x="810" y="112" font-family="monospace" font-size="24" font-weight="800" fill="#ffab40" filter="url(#glow)">84.1%</text>
+  <text x="810" y="130" font-family="monospace" font-size="9" fill="white" fill-opacity="0.3">12 active</text>
+  <rect x="810" y="145" width="46" height="16" rx="3" fill="#ff5252" fill-opacity="0.15"/>
+  <text x="833" y="157" font-family="monospace" font-size="8" font-weight="600" fill="#ff5252" text-anchor="middle">▼ -1.2%</text>
+
+  <!-- Card 5: Edge Mgmt -->
+  <rect x="995" y="56" width="185" height="160" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <rect x="995" y="56" width="185" height="2" rx="1" fill="#00e676" filter="url(#glow)"/>
+  <text x="1015" y="80" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">🌐 EDGE MGMT</text>
+  <text x="1015" y="112" font-family="monospace" font-size="24" font-weight="800" fill="#00e676" filter="url(#glow)">92.4%</text>
+  <text x="1015" y="130" font-family="monospace" font-size="9" fill="white" fill-opacity="0.3">316 vulnerable</text>
+  <rect x="1015" y="145" width="46" height="16" rx="3" fill="#00e676" fill-opacity="0.15"/>
+  <text x="1038" y="157" font-family="monospace" font-size="8" font-weight="600" fill="#00e676" text-anchor="middle">▲ +3.0%</text>
+
+  <!-- Security Alerts Section -->
+  <text x="46" y="248" font-family="monospace" font-size="10" font-weight="700" fill="white" fill-opacity="0.55" letter-spacing="1.5">🛡 SECURITY &amp; RISK FINDINGS</text>
+  <text x="268" y="248" font-family="monospace" font-size="8" fill="white" fill-opacity="0.2" letter-spacing="0.5">Critical items requiring attention</text>
+  <rect x="20" y="258" width="1160" height="130" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+
+  <!-- Alert 1 -->
+  <rect x="40" y="270" width="1120" height="24" rx="4" fill="white" fill-opacity="0.01"/>
+  <rect x="40" y="270" width="2" height="24" rx="1" fill="#ff5252"/>
+  <rect x="52" y="274" width="60" height="16" rx="3" fill="#ff5252" fill-opacity="0.12" stroke="#ff5252" stroke-opacity="0.2" stroke-width="0.5"/>
+  <text x="82" y="286" font-family="monospace" font-size="7" font-weight="700" fill="#ff5252" text-anchor="middle" letter-spacing="1">CRITICAL</text>
+  <text x="122" y="286" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">89 devices missing critical February security patches</text>
+  <rect x="1108" y="274" width="48" height="16" rx="3" fill="white" fill-opacity="0.06"/>
+  <text x="1132" y="286" font-family="monospace" font-size="7" font-weight="600" fill="white" fill-opacity="0.18" text-anchor="middle" letter-spacing="1">UPDATES</text>
+
+  <!-- Alert 2 -->
+  <rect x="40" y="300" width="1120" height="24" rx="4" fill="white" fill-opacity="0.01"/>
+  <rect x="52" y="304" width="60" height="16" rx="3" fill="#ff9800" fill-opacity="0.12" stroke="#ff9800" stroke-opacity="0.2" stroke-width="0.5"/>
+  <text x="82" y="316" font-family="monospace" font-size="7" font-weight="700" fill="#ff9800" text-anchor="middle" letter-spacing="1">HIGH</text>
+  <text x="122" y="316" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">316 devices running vulnerable Edge versions (≤120.x)</text>
+  <rect x="1108" y="304" width="48" height="16" rx="3" fill="white" fill-opacity="0.06"/>
+  <text x="1132" y="316" font-family="monospace" font-size="7" font-weight="600" fill="white" fill-opacity="0.18" text-anchor="middle" letter-spacing="1">EDGE</text>
+
+  <!-- Alert 3 -->
+  <rect x="40" y="330" width="1120" height="24" rx="4" fill="white" fill-opacity="0.01"/>
+  <rect x="52" y="334" width="60" height="16" rx="3" fill="#ffab40" fill-opacity="0.15" stroke="#ffab40" stroke-opacity="0.2" stroke-width="0.5"/>
+  <text x="82" y="346" font-family="monospace" font-size="7" font-weight="700" fill="#ffab40" text-anchor="middle" letter-spacing="1">MEDIUM</text>
+  <text x="122" y="346" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">2 distribution points in error state requiring remediation</text>
+  <rect x="1108" y="334" width="48" height="16" rx="3" fill="white" fill-opacity="0.06"/>
+  <text x="1132" y="346" font-family="monospace" font-size="7" font-weight="600" fill="white" fill-opacity="0.18" text-anchor="middle" letter-spacing="1">CONTENT</text>
+
+  <!-- Alert 4 -->
+  <rect x="40" y="360" width="1120" height="24" rx="4" fill="white" fill-opacity="0.01"/>
+  <rect x="52" y="364" width="60" height="16" rx="3" fill="#ffab40" fill-opacity="0.15" stroke="#ffab40" stroke-opacity="0.2" stroke-width="0.5"/>
+  <text x="82" y="376" font-family="monospace" font-size="7" font-weight="700" fill="#ffab40" text-anchor="middle" letter-spacing="1">MEDIUM</text>
+  <text x="122" y="376" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">184 devices inactive for 30+ days — possible stale records</text>
+  <rect x="1108" y="364" width="48" height="16" rx="3" fill="white" fill-opacity="0.06"/>
+  <text x="1132" y="376" font-family="monospace" font-size="7" font-weight="600" fill="white" fill-opacity="0.18" text-anchor="middle" letter-spacing="1">CLIENTS</text>
+
+  <!-- Client Health Section -->
+  <text x="46" y="420" font-family="monospace" font-size="10" font-weight="700" fill="white" fill-opacity="0.55" letter-spacing="1.5">💻 CLIENT HEALTH</text>
+
+  <!-- Card: Device Summary -->
+  <rect x="20" y="430" width="380" height="250" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="40" y="454" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">DEVICE SUMMARY</text>
+  <text x="40" y="490" font-family="monospace" font-size="22" font-weight="800" fill="#00e676" filter="url(#glow)">91.2%</text>
+  <!-- Progress bar 1 -->
+  <text x="40" y="520" font-family="monospace" font-size="8" fill="white" fill-opacity="0.55">Healthy Clients</text>
+  <text x="370" y="520" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">4,102 / 4,502 (91.1%)</text>
+  <rect x="40" y="526" width="340" height="5" rx="2.5" fill="white" fill-opacity="0.06"/>
+  <rect x="40" y="526" width="310" height="5" rx="2.5" fill="url(#greenGrad)" filter="url(#glow)"/>
+  <!-- Progress bar 2 -->
+  <text x="40" y="550" font-family="monospace" font-size="8" fill="white" fill-opacity="0.55">Active Clients</text>
+  <text x="370" y="550" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">4,318 / 4,502 (95.9%)</text>
+  <rect x="40" y="556" width="340" height="5" rx="2.5" fill="white" fill-opacity="0.06"/>
+  <rect x="40" y="556" width="326" height="5" rx="2.5" fill="#448aff"/>
+  <!-- Stat rows -->
+  <line x1="40" y1="580" x2="380" y2="580" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="40" y="596" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">Inactive (>30d)</text>
+  <text x="370" y="596" font-family="monospace" font-size="9" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">184</text>
+  <rect x="334" y="585" width="22" height="14" rx="3" fill="#ffab40" fill-opacity="0.15"/>
+  <text x="345" y="596" font-family="monospace" font-size="8" fill="#ffab40" text-anchor="middle">⚠</text>
+
+  <!-- Card: Activity + Trend -->
+  <rect x="410" y="430" width="380" height="250" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="430" y="454" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">CLIENT ACTIVITY</text>
+  <line x1="430" y1="470" x2="770" y2="470" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="430" y="488" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">Last 24 hours</text>
+  <text x="770" y="488" font-family="monospace" font-size="9" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">3,847</text>
+  <line x1="430" y1="498" x2="770" y2="498" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="430" y="516" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">Last 7 days</text>
+  <text x="770" y="516" font-family="monospace" font-size="9" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">4,291</text>
+  <line x1="430" y1="526" x2="770" y2="526" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="430" y="544" font-family="monospace" font-size="9" fill="white" fill-opacity="0.55">Stale (>30 days)</text>
+  <text x="770" y="544" font-family="monospace" font-size="9" font-weight="600" fill="white" fill-opacity="0.9" text-anchor="end">184</text>
+  <!-- Mini trend line -->
+  <text x="430" y="574" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">7-DAY HEALTH TREND</text>
+  <rect x="430" y="580" width="340" height="90" rx="4" fill="url(#cyanGrad)"/>
+  <polyline points="440,660 490,652 540,648 590,655 640,645 690,640 740,642 760,638" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- Card: OS Distribution -->
+  <rect x="800" y="430" width="380" height="250" rx="8" fill="white" fill-opacity="0.03" stroke="white" stroke-opacity="0.06" stroke-width="1"/>
+  <text x="820" y="454" font-family="monospace" font-size="8" font-weight="600" fill="white" fill-opacity="0.3" letter-spacing="1.5">OS DISTRIBUTION</text>
+  <!-- Doughnut chart mock -->
+  <circle cx="920" cy="570" r="60" fill="none" stroke="#448aff" stroke-width="14" stroke-dasharray="120 257" transform="rotate(-90 920 570)"/>
+  <circle cx="920" cy="570" r="60" fill="none" stroke="#b388ff" stroke-width="14" stroke-dasharray="75 302" stroke-dashoffset="-120" transform="rotate(-90 920 570)"/>
+  <circle cx="920" cy="570" r="60" fill="none" stroke="#00e5ff" stroke-width="14" stroke-dasharray="55 322" stroke-dashoffset="-195" transform="rotate(-90 920 570)"/>
+  <circle cx="920" cy="570" r="60" fill="none" stroke="#00e676" stroke-width="14" stroke-dasharray="40 337" stroke-dashoffset="-250" transform="rotate(-90 920 570)"/>
+  <circle cx="920" cy="570" r="60" fill="none" stroke="#ffab40" stroke-width="14" stroke-dasharray="30 347" stroke-dashoffset="-290" transform="rotate(-90 920 570)"/>
+  <!-- Legend -->
+  <rect x="1010" y="500" width="8" height="8" rx="1" fill="#448aff"/>
+  <text x="1025" y="508" font-family="monospace" font-size="8" fill="white" fill-opacity="0.5">Windows 11</text>
+  <rect x="1010" y="520" width="8" height="8" rx="1" fill="#b388ff"/>
+  <text x="1025" y="528" font-family="monospace" font-size="8" fill="white" fill-opacity="0.5">Windows 10</text>
+  <rect x="1010" y="540" width="8" height="8" rx="1" fill="#00e5ff"/>
+  <text x="1025" y="548" font-family="monospace" font-size="8" fill="white" fill-opacity="0.5">Server 2022</text>
+  <rect x="1010" y="560" width="8" height="8" rx="1" fill="#00e676"/>
+  <text x="1025" y="568" font-family="monospace" font-size="8" fill="white" fill-opacity="0.5">Server 2019</text>
+  <rect x="1010" y="580" width="8" height="8" rx="1" fill="#ffab40"/>
+  <text x="1025" y="588" font-family="monospace" font-size="8" fill="white" fill-opacity="0.5">Server 2016</text>
+</svg>
