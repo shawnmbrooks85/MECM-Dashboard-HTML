@@ -55,8 +55,9 @@
 
   // ─── Helpers ──────────────────────────────────────────────
   const $ = (sel) => document.querySelector(sel);
-  const fmt = (n) => n.toLocaleString();
-  const pct = (n) => n.toFixed(1) + '%';
+  const fmt = (n) => (n != null ? n.toLocaleString() : '0');
+  const pct = (n) => (n != null ? n.toFixed(1) + '%' : '0.0%');
+  const noData = (msg = 'No data available') => `<div style="padding:24px;text-align:center;color:var(--text-dim,rgba(255,255,255,0.25));font-size:0.8rem;letter-spacing:1px;">${msg}</div>`;
 
   function ragClass(val, thresholds = [90, 75]) {
     if (val >= thresholds[0]) return 'rag-green';
@@ -161,70 +162,82 @@
   `;
 
   // Health trend chart
-  const trendCtx = $('#chartClientTrend').getContext('2d');
-  new Chart(trendCtx, {
-    type: 'line',
-    data: {
-      labels: ch.healthTrend.map(t => t.date.slice(5)),
-      datasets: [{
-        label: 'Health %',
-        data: ch.healthTrend.map(t => t.percent),
-        borderColor: COLORS.cyan,
-        backgroundColor: makeGradient(trendCtx, COLORS.cyan, 0.12),
-        fill: true,
-        tension: 0.4,
-        pointRadius: 2,
-        pointBackgroundColor: COLORS.cyan,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: COLORS.cyan,
-        pointHoverBorderColor: '#fff',
-        pointHoverBorderWidth: 1,
-        borderWidth: 2,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { min: 85, max: 95, ticks: { callback: v => v + '%' } },
-        x: { grid: { display: false } }
+  if (ch.healthTrend && ch.healthTrend.length > 0) {
+    const trendCtx = $('#chartClientTrend').getContext('2d');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ch.healthTrend.map(t => t.date.slice(5)),
+        datasets: [{
+          label: 'Health %',
+          data: ch.healthTrend.map(t => t.percent),
+          borderColor: COLORS.cyan,
+          backgroundColor: makeGradient(trendCtx, COLORS.cyan, 0.12),
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+          pointBackgroundColor: COLORS.cyan,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: COLORS.cyan,
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 1,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { min: 85, max: 95, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
       }
-    }
-  });
+    });
+  } else {
+    $('#chartClientTrend').parentElement.innerHTML = noData('No trend data');
+  }
 
   // OS distribution chart
-  new Chart($('#chartOsDist'), {
-    type: 'doughnut',
-    data: {
-      labels: ch.osBuildDistribution.map(o => o.os),
-      datasets: [{
-        data: ch.osBuildDistribution.map(o => o.count),
-        backgroundColor: CHART_PALETTE,
-        borderWidth: 0,
-        hoverOffset: 4,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '68%',
-      plugins: { legend: { position: 'right', labels: { font: { size: 9 } } } }
-    }
-  });
+  if (ch.osBuildDistribution && ch.osBuildDistribution.length > 0) {
+    new Chart($('#chartOsDist'), {
+      type: 'doughnut',
+      data: {
+        labels: ch.osBuildDistribution.map(o => o.os),
+        datasets: [{
+          data: ch.osBuildDistribution.map(o => o.count),
+          backgroundColor: CHART_PALETTE,
+          borderWidth: 0,
+          hoverOffset: 4,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '68%',
+        plugins: { legend: { position: 'right', labels: { font: { size: 9 } } } }
+      }
+    });
+  } else {
+    $('#chartOsDist').parentElement.innerHTML = noData('No OS data');
+  }
 
   // Top issues table
-  const issueRows = ch.topIssues.map(i => {
-    const sevClass = { critical: 'pill-red', high: 'pill-amber', medium: 'pill-blue' }[i.severity] || 'pill-blue';
-    return `<tr>
-      <td><span class="pill ${sevClass}">${i.severity}</span></td>
-      <td>${i.issue}</td>
-      <td style="text-align:right;font-weight:600;">${i.count}</td>
-    </tr>`;
-  }).join('');
-  $('#clientTopIssues').innerHTML = `
-    <table class="data-table">
-      <thead><tr><th>Severity</th><th>Issue</th><th>Devices</th></tr></thead>
-      <tbody>${issueRows}</tbody>
-    </table>`;
+  if (ch.topIssues && ch.topIssues.length > 0) {
+    const issueRows = ch.topIssues.map(i => {
+      const sevClass = { critical: 'pill-red', high: 'pill-amber', medium: 'pill-blue' }[i.severity] || 'pill-blue';
+      return `<tr>
+        <td><span class="pill ${sevClass}">${i.severity}</span></td>
+        <td>${i.issue}</td>
+        <td style="text-align:right;font-weight:600;">${i.count}</td>
+      </tr>`;
+    }).join('');
+    $('#clientTopIssues').innerHTML = `
+      <table class="data-table">
+        <thead><tr><th>Severity</th><th>Issue</th><th>Devices</th></tr></thead>
+        <tbody>${issueRows}</tbody>
+      </table>`;
+  } else {
+    $('#clientTopIssues').innerHTML = noData('No issues detected');
+  }
 
   // ─── CONTENT DISTRIBUTION ─────────────────────────────────
   const cd = DATA.contentDistribution;
@@ -242,70 +255,86 @@
   `;
 
   // Content type chart
-  new Chart($('#chartContentType'), {
-    type: 'bar',
-    data: {
-      labels: cd.contentTypeBreakdown.map(ct => ct.type),
-      datasets: [{
-        label: 'Packages',
-        data: cd.contentTypeBreakdown.map(ct => ct.count),
-        backgroundColor: CHART_PALETTE.map(c => c + '44'),
-        borderColor: CHART_PALETTE,
-        borderWidth: 1,
-        borderRadius: 2,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true },
-        x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+  if (cd.contentTypeBreakdown && cd.contentTypeBreakdown.length > 0) {
+    new Chart($('#chartContentType'), {
+      type: 'bar',
+      data: {
+        labels: cd.contentTypeBreakdown.map(ct => ct.type),
+        datasets: [{
+          label: 'Packages',
+          data: cd.contentTypeBreakdown.map(ct => ct.count),
+          backgroundColor: CHART_PALETTE.map(c => c + '44'),
+          borderColor: CHART_PALETTE,
+          borderWidth: 1,
+          borderRadius: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true },
+          x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+        }
       }
-    }
-  });
+    });
+  } else {
+    $('#chartContentType').parentElement.innerHTML = noData('No content data');
+  }
 
   // Distribution trend
-  const distCtx = $('#chartDistTrend').getContext('2d');
-  new Chart(distCtx, {
-    type: 'line',
-    data: {
-      labels: cd.distributionTrend.map(t => t.date.slice(5)),
-      datasets: [
-        { label: 'Success', data: cd.distributionTrend.map(t => t.success), borderColor: COLORS.green, backgroundColor: makeGradient(distCtx, COLORS.green, 0.08), fill: true, tension: 0.4, pointRadius: 1, borderWidth: 2 },
-        { label: 'Failed', data: cd.distributionTrend.map(t => t.failed), borderColor: COLORS.red, tension: 0.4, pointRadius: 1, borderWidth: 2 },
-        { label: 'In Progress', data: cd.distributionTrend.map(t => t.inProgress), borderColor: COLORS.amber, tension: 0.4, pointRadius: 1, borderDash: [4, 3], borderWidth: 1.5 },
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      scales: { x: { grid: { display: false } } }
-    }
-  });
+  if (cd.distributionTrend && cd.distributionTrend.length > 0) {
+    const distCtx = $('#chartDistTrend').getContext('2d');
+    new Chart(distCtx, {
+      type: 'line',
+      data: {
+        labels: cd.distributionTrend.map(t => t.date.slice(5)),
+        datasets: [
+          { label: 'Success', data: cd.distributionTrend.map(t => t.success), borderColor: COLORS.green, backgroundColor: makeGradient(distCtx, COLORS.green, 0.08), fill: true, tension: 0.4, pointRadius: 1, borderWidth: 2 },
+          { label: 'Failed', data: cd.distributionTrend.map(t => t.failed), borderColor: COLORS.red, tension: 0.4, pointRadius: 1, borderWidth: 2 },
+          { label: 'In Progress', data: cd.distributionTrend.map(t => t.inProgress), borderColor: COLORS.amber, tension: 0.4, pointRadius: 1, borderDash: [4, 3], borderWidth: 1.5 },
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { x: { grid: { display: false } } }
+      }
+    });
+  } else {
+    $('#chartDistTrend').parentElement.innerHTML = noData('No trend data');
+  }
 
   // DP group table
-  const dpGroupRows = cd.dpGroups.map(g => {
-    const pClass = ragClass(g.compliance).replace('rag-', 'progress-');
-    return `<div style="margin-bottom:6px;">
-      ${progressBar(g.name + ` (${g.members} DPs)`, Math.round(g.compliance * g.packages / 100), g.packages, pClass)}
-    </div>`;
-  }).join('');
-  $('#dpGroupTable').innerHTML = dpGroupRows;
+  if (cd.dpGroups && cd.dpGroups.length > 0) {
+    const dpGroupRows = cd.dpGroups.map(g => {
+      const pClass = ragClass(g.compliance).replace('rag-', 'progress-');
+      return `<div style="margin-bottom:6px;">
+        ${progressBar(g.name + ` (${g.members} DPs)`, Math.round(g.compliance * g.packages / 100), g.packages, pClass)}
+      </div>`;
+    }).join('');
+    $('#dpGroupTable').innerHTML = dpGroupRows;
+  } else {
+    $('#dpGroupTable').innerHTML = noData('No DP group data');
+  }
 
   // Failed packages
-  const failedHtml = cd.failedPackages.map(fp => `
-    <div class="deployment-item">
-      <div class="deployment-header">
-        <span class="deployment-name">${fp.name}</span>
-        <span class="pill pill-red">${fp.failedDPs} DP${fp.failedDPs > 1 ? 's' : ''}</span>
+  if (cd.failedPackages && cd.failedPackages.length > 0) {
+    const failedHtml = cd.failedPackages.map(fp => `
+      <div class="deployment-item">
+        <div class="deployment-header">
+          <span class="deployment-name">${fp.name}</span>
+          <span class="pill pill-red">${fp.failedDPs} DP${fp.failedDPs > 1 ? 's' : ''}</span>
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">
+          <span style="color:var(--text-dim);">${fp.packageId}</span> · ${fp.type}
+        </div>
+        <div style="font-size:0.75rem;color:var(--red);margin-top:4px;">${fp.error}</div>
       </div>
-      <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">
-        <span style="color:var(--text-dim);">${fp.packageId}</span> · ${fp.type}
-      </div>
-      <div style="font-size:0.75rem;color:var(--red);margin-top:4px;">${fp.error}</div>
-    </div>
-  `).join('');
-  $('#failedPackages').innerHTML = failedHtml;
+    `).join('');
+    $('#failedPackages').innerHTML = failedHtml;
+  } else {
+    $('#failedPackages').innerHTML = noData('No failed packages — all clear');
+  }
 
   // ─── SOFTWARE UPDATE COMPLIANCE ───────────────────────────
   const sc = DATA.softwareUpdateCompliance;
@@ -318,196 +347,231 @@
   `;
 
   // Missing by severity chart
-  const sevData = sc.missingUpdatesBySeverity;
-  new Chart($('#chartMissingSeverity'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Critical', 'Important', 'Moderate', 'Low', 'Unrated'],
-      datasets: [{
-        data: [sevData.critical, sevData.important, sevData.moderate, sevData.low, sevData.unrated],
-        backgroundColor: [COLORS.red, COLORS.pink, COLORS.amber, COLORS.green, 'rgba(255,255,255,0.15)'],
-        borderWidth: 0,
-        hoverOffset: 4,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '65%',
-      plugins: { legend: { position: 'right', labels: { font: { size: 9 } } } }
-    }
-  });
+  const sevData = sc.missingUpdatesBySeverity || {};
+  const sevTotal = (sevData.critical || 0) + (sevData.important || 0) + (sevData.moderate || 0) + (sevData.low || 0) + (sevData.unrated || 0);
+  if (sevTotal > 0) {
+    new Chart($('#chartMissingSeverity'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Critical', 'Important', 'Moderate', 'Low', 'Unrated'],
+        datasets: [{
+          data: [sevData.critical, sevData.important, sevData.moderate, sevData.low, sevData.unrated],
+          backgroundColor: [COLORS.red, COLORS.pink, COLORS.amber, COLORS.green, 'rgba(255,255,255,0.15)'],
+          borderWidth: 0,
+          hoverOffset: 4,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: { legend: { position: 'right', labels: { font: { size: 9 } } } }
+      }
+    });
+  } else {
+    $('#chartMissingSeverity').parentElement.innerHTML = noData('No severity data');
+  }
 
   // Compliance trend
-  const compCtx = $('#chartComplianceTrend').getContext('2d');
-  new Chart(compCtx, {
-    type: 'line',
-    data: {
-      labels: sc.complianceTrend.map(t => t.date.slice(5)),
-      datasets: [{
-        label: 'Compliance %',
-        data: sc.complianceTrend.map(t => t.percent),
-        borderColor: COLORS.green,
-        backgroundColor: makeGradient(compCtx, COLORS.green, 0.10),
-        fill: true,
-        tension: 0.4,
-        pointRadius: 2,
-        pointBackgroundColor: COLORS.green,
-        borderWidth: 2,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { min: 60, max: 80, ticks: { callback: v => v + '%' } },
-        x: { grid: { display: false } }
+  if (sc.complianceTrend && sc.complianceTrend.length > 0) {
+    const compCtx = $('#chartComplianceTrend').getContext('2d');
+    new Chart(compCtx, {
+      type: 'line',
+      data: {
+        labels: sc.complianceTrend.map(t => t.date.slice(5)),
+        datasets: [{
+          label: 'Compliance %',
+          data: sc.complianceTrend.map(t => t.percent),
+          borderColor: COLORS.green,
+          backgroundColor: makeGradient(compCtx, COLORS.green, 0.10),
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+          pointBackgroundColor: COLORS.green,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { min: 60, max: 80, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
       }
-    }
-  });
+    });
+  } else {
+    $('#chartComplianceTrend').parentElement.innerHTML = noData('No trend data');
+  }
 
   // Top missing updates
-  const missingRows = sc.topMissingUpdates.map(u => {
-    const sev = u.severity.toLowerCase();
-    const cls = { critical: 'pill-red', important: 'pill-amber' }[sev] || 'pill-blue';
-    return `<tr>
-      <td><span class="pill ${cls}">${u.severity}</span></td>
-      <td style="max-width:400px;">${u.title}</td>
-      <td style="text-align:right;font-weight:600;">${fmt(u.missing)}</td>
-      <td style="color:var(--text-dim);">${u.released}</td>
-    </tr>`;
-  }).join('');
-  $('#topMissingUpdates').innerHTML = `
-    <table class="data-table">
-      <thead><tr><th>Sev</th><th>Update</th><th>Missing</th><th>Released</th></tr></thead>
-      <tbody>${missingRows}</tbody>
-    </table>`;
+  if (sc.topMissingUpdates && sc.topMissingUpdates.length > 0) {
+    const missingRows = sc.topMissingUpdates.map(u => {
+      const sev = u.severity.toLowerCase();
+      const cls = { critical: 'pill-red', important: 'pill-amber' }[sev] || 'pill-blue';
+      return `<tr>
+        <td><span class="pill ${cls}">${u.severity}</span></td>
+        <td style="max-width:400px;">${u.title}</td>
+        <td style="text-align:right;font-weight:600;">${fmt(u.missing)}</td>
+        <td style="color:var(--text-dim);">${u.released}</td>
+      </tr>`;
+    }).join('');
+    $('#topMissingUpdates').innerHTML = `
+      <table class="data-table">
+        <thead><tr><th>Sev</th><th>Update</th><th>Missing</th><th>Released</th></tr></thead>
+        <tbody>${missingRows}</tbody>
+      </table>`;
+  } else {
+    $('#topMissingUpdates').innerHTML = noData('No missing update data');
+  }
 
   // Compliance by collection
-  const collHtml = sc.complianceByCollection.map(col => {
-    const pClass = ragClass(col.percent, [90, 75]).replace('rag-', 'progress-');
-    return progressBar(col.collection, col.compliant, col.total, pClass);
-  }).join('');
-  $('#complianceByCollection').innerHTML = collHtml;
+  if (sc.complianceByCollection && sc.complianceByCollection.length > 0) {
+    const collHtml = sc.complianceByCollection.map(col => {
+      const pClass = ragClass(col.percent, [90, 75]).replace('rag-', 'progress-');
+      return progressBar(col.collection, col.compliant, col.total, pClass);
+    }).join('');
+    $('#complianceByCollection').innerHTML = collHtml;
+  } else {
+    $('#complianceByCollection').innerHTML = noData('No collection data');
+  }
 
   // ─── SOFTWARE UPDATE DEPLOYMENTS ──────────────────────────
   const sd = DATA.softwareUpdateDeployment;
   $('#pendingRestartsBadge').textContent = `⏳ ${fmt(sd.pendingRestarts)} pending restarts`;
 
-  const deployHtml = sd.deployments.map(dep => {
-    const total = dep.total;
-    const pctInstalled = (dep.installed / total * 100).toFixed(1);
-    const statusPill = dep.status === 'warning'
-      ? '<span class="pill pill-amber">⚠ PAST DUE</span>'
-      : '<span class="pill pill-green">ACTIVE</span>';
-    return `
-      <div class="deployment-item">
-        <div class="deployment-header">
-          <div>
-            <div class="deployment-name">${dep.name}</div>
-            <div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;letter-spacing:0.5px;">${dep.collection}</div>
+  if (sd.deployments && sd.deployments.length > 0) {
+    const deployHtml = sd.deployments.map(dep => {
+      const total = dep.total || 1;
+      const pctInstalled = (dep.installed / total * 100).toFixed(1);
+      const statusPill = dep.status === 'warning'
+        ? '<span class="pill pill-amber">⚠ PAST DUE</span>'
+        : '<span class="pill pill-green">ACTIVE</span>';
+      return `
+        <div class="deployment-item">
+          <div class="deployment-header">
+            <div>
+              <div class="deployment-name">${dep.name}</div>
+              <div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;letter-spacing:0.5px;">${dep.collection}</div>
+            </div>
+            <div style="text-align:right;">
+              ${statusPill}
+              <div class="deployment-deadline">DUE: ${dep.deadline}</div>
+            </div>
           </div>
-          <div style="text-align:right;">
-            ${statusPill}
-            <div class="deployment-deadline">DUE: ${dep.deadline}</div>
+          <div class="segmented-bar" style="margin:8px 0;">
+            <div class="segment segment-green" style="width:${(dep.installed / total * 100)}%" title="Installed: ${dep.installed}"></div>
+            <div class="segment segment-blue" style="width:${(dep.downloading / total * 100)}%" title="Downloading: ${dep.downloading}"></div>
+            <div class="segment segment-amber" style="width:${((dep.waiting + dep.pendingRestart) / total * 100)}%" title="Waiting/Restart: ${dep.waiting + dep.pendingRestart}"></div>
+            <div class="segment segment-red" style="width:${(dep.failed / total * 100)}%" title="Failed: ${dep.failed}"></div>
           </div>
-        </div>
-        <div class="segmented-bar" style="margin:8px 0;">
-          <div class="segment segment-green" style="width:${(dep.installed / total * 100)}%" title="Installed: ${dep.installed}"></div>
-          <div class="segment segment-blue" style="width:${(dep.downloading / total * 100)}%" title="Downloading: ${dep.downloading}"></div>
-          <div class="segment segment-amber" style="width:${((dep.waiting + dep.pendingRestart) / total * 100)}%" title="Waiting/Restart: ${dep.waiting + dep.pendingRestart}"></div>
-          <div class="segment segment-red" style="width:${(dep.failed / total * 100)}%" title="Failed: ${dep.failed}"></div>
-        </div>
-        <div class="deployment-stats">
-          <span class="deployment-stat"><span class="dot dot-green"></span> ${fmt(dep.installed)} installed (${pctInstalled}%)</span>
-          <span class="deployment-stat"><span class="dot dot-blue"></span> ${dep.downloading} downloading</span>
-          <span class="deployment-stat"><span class="dot dot-amber"></span> ${dep.waiting + dep.pendingRestart} waiting/restart</span>
-          <span class="deployment-stat"><span class="dot dot-red"></span> ${dep.failed} failed</span>
-        </div>
-      </div>`;
-  }).join('');
-  $('#deploymentList').innerHTML = deployHtml;
+          <div class="deployment-stats">
+            <span class="deployment-stat"><span class="dot dot-green"></span> ${fmt(dep.installed)} installed (${pctInstalled}%)</span>
+            <span class="deployment-stat"><span class="dot dot-blue"></span> ${dep.downloading} downloading</span>
+            <span class="deployment-stat"><span class="dot dot-amber"></span> ${dep.waiting + dep.pendingRestart} waiting/restart</span>
+            <span class="deployment-stat"><span class="dot dot-red"></span> ${dep.failed} failed</span>
+          </div>
+        </div>`;
+    }).join('');
+    $('#deploymentList').innerHTML = deployHtml;
+  } else {
+    $('#deploymentList').innerHTML = noData('No active deployments');
+  }
 
   // Error codes
-  const errHtml = sd.errorCodeBreakdown.map(e => `
-    <div class="deployment-item" style="display:flex;justify-content:space-between;align-items:center;">
-      <div>
-        <span style="color:var(--red);font-weight:600;letter-spacing:0.5px;">${e.code}</span>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">${e.description}</div>
-      </div>
-      <span style="font-weight:700;color:var(--text-primary);font-size:0.85rem;">${e.count}</span>
-    </div>`).join('');
-  $('#errorCodes').innerHTML = errHtml;
+  if (sd.errorCodeBreakdown && sd.errorCodeBreakdown.length > 0) {
+    const errHtml = sd.errorCodeBreakdown.map(e => `
+      <div class="deployment-item" style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <span style="color:var(--red);font-weight:600;letter-spacing:0.5px;">${e.code}</span>
+          <div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">${e.description}</div>
+        </div>
+        <span style="font-weight:700;color:var(--text-primary);font-size:0.85rem;">${e.count}</span>
+      </div>`).join('');
+    $('#errorCodes').innerHTML = errHtml;
+  } else {
+    $('#errorCodes').innerHTML = noData('No error data');
+  }
 
   // ─── EDGE MANAGEMENT ─────────────────────────────────────
   const em = DATA.edgeManagement;
-  const edgeSafePercent = 100 - em.vulnerablePercent;
+  const edgeSafePercent = 100 - (em.vulnerablePercent || 0);
+  const bu = em.browserUsageLast30d || {};
   $('#edgeOverview').innerHTML = `
-    <div class="big-number" style="margin-bottom:12px;color:${ragColor(em.edgePenetration)};text-shadow:0 0 20px ${ragColor(em.edgePenetration)}44;">${pct(em.edgePenetration)}</div>
-    ${progressBar('Edge Installed', em.totalEdgeInstalled, em.totalDevicesWithBrowser, 'progress-green')}
-    ${statRow('Vulnerable Clients', fmt(em.vulnerableEdgeClients), '<span class="pill pill-red">!</span>')}
+    <div class="big-number" style="margin-bottom:12px;color:${ragColor(em.edgePenetration || 0)};text-shadow:0 0 20px ${ragColor(em.edgePenetration || 0)}44;">${pct(em.edgePenetration || 0)}</div>
+    ${progressBar('Edge Installed', em.totalEdgeInstalled || 0, em.totalDevicesWithBrowser || 1, 'progress-green')}
+    ${statRow('Vulnerable Clients', fmt(em.vulnerableEdgeClients || 0), '<span class="pill pill-red">!</span>')}
     ${statRow('Secure (Current/Recent)', pct(edgeSafePercent))}
     <div style="margin-top:12px;">
       <div class="stat-card-title" style="margin-bottom:8px;">BROWSER USAGE (30D)</div>
-      ${statRow('Edge', pct(em.browserUsageLast30d.edge))}
-      ${statRow('Chrome', pct(em.browserUsageLast30d.chrome))}
-      ${statRow('Firefox', pct(em.browserUsageLast30d.firefox))}
-      ${statRow('Other', pct(em.browserUsageLast30d.other))}
+      ${statRow('Edge', pct(bu.edge || 0))}
+      ${statRow('Chrome', pct(bu.chrome || 0))}
+      ${statRow('Firefox', pct(bu.firefox || 0))}
+      ${statRow('Other', pct(bu.other || 0))}
     </div>
   `;
 
   // Edge version distribution chart
-  new Chart($('#chartEdgeVersions'), {
-    type: 'bar',
-    data: {
-      labels: em.edgeVersionDistribution.map(v => v.version.length > 18 ? v.version.slice(0, 18) + '…' : v.version),
-      datasets: [{
-        label: 'Devices',
-        data: em.edgeVersionDistribution.map(v => v.count),
-        backgroundColor: em.edgeVersionDistribution.map(v => {
-          if (v.status === 'current') return COLORS.green + '66';
-          if (v.status === 'recent') return COLORS.blue + '66';
-          if (v.status === 'outdated') return COLORS.amber + '66';
-          return COLORS.red + '66';
-        }),
-        borderColor: em.edgeVersionDistribution.map(v => {
-          if (v.status === 'current') return COLORS.green;
-          if (v.status === 'recent') return COLORS.blue;
-          if (v.status === 'outdated') return COLORS.amber;
-          return COLORS.red;
-        }),
-        borderWidth: 1,
-        borderRadius: 2,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      indexAxis: 'y',
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { beginAtZero: true },
-        y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+  if (em.edgeVersionDistribution && em.edgeVersionDistribution.length > 0) {
+    new Chart($('#chartEdgeVersions'), {
+      type: 'bar',
+      data: {
+        labels: em.edgeVersionDistribution.map(v => v.version.length > 18 ? v.version.slice(0, 18) + '…' : v.version),
+        datasets: [{
+          label: 'Devices',
+          data: em.edgeVersionDistribution.map(v => v.count),
+          backgroundColor: em.edgeVersionDistribution.map(v => {
+            if (v.status === 'current') return COLORS.green + '66';
+            if (v.status === 'recent') return COLORS.blue + '66';
+            if (v.status === 'outdated') return COLORS.amber + '66';
+            return COLORS.red + '66';
+          }),
+          borderColor: em.edgeVersionDistribution.map(v => {
+            if (v.status === 'current') return COLORS.green;
+            if (v.status === 'recent') return COLORS.blue;
+            if (v.status === 'outdated') return COLORS.amber;
+            return COLORS.red;
+          }),
+          borderWidth: 1,
+          borderRadius: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true },
+          y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+        }
       }
-    }
-  });
+    });
+  } else {
+    $('#chartEdgeVersions').parentElement.innerHTML = noData('No Edge version data');
+  }
 
   // Default browser chart
-  const dbs = em.defaultBrowserStats;
-  new Chart($('#chartDefaultBrowser'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Edge', 'Chrome', 'Firefox', 'Other'],
-      datasets: [{
-        data: [dbs.edge, dbs.chrome, dbs.firefox, dbs.other],
-        backgroundColor: [COLORS.blue, COLORS.amber, COLORS.red, 'rgba(255,255,255,0.12)'],
-        borderWidth: 0,
-        hoverOffset: 4,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '68%',
-      plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }
-    }
-  });
+  const dbs = em.defaultBrowserStats || {};
+  const dbsTotal = (dbs.edge || 0) + (dbs.chrome || 0) + (dbs.firefox || 0) + (dbs.other || 0);
+  if (dbsTotal > 0) {
+    new Chart($('#chartDefaultBrowser'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Edge', 'Chrome', 'Firefox', 'Other'],
+        datasets: [{
+          data: [dbs.edge, dbs.chrome, dbs.firefox, dbs.other],
+          backgroundColor: [COLORS.blue, COLORS.amber, COLORS.red, 'rgba(255,255,255,0.12)'],
+          borderWidth: 0,
+          hoverOffset: 4,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '68%',
+        plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } }
+      }
+    });
+  } else {
+    $('#chartDefaultBrowser').parentElement.innerHTML = noData('No browser data');
+  }
 
 })();

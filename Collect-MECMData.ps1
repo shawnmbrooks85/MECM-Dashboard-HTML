@@ -34,18 +34,41 @@
 
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$ServerName,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$DatabaseName,
 
     [string]$OutputPath = (Join-Path $PSScriptRoot "data\mock_data.json"),
 
-    [switch]$UseCredential
+    [switch]$UseCredential,
+
+    [switch]$UseSampleData
 )
 
 $ErrorActionPreference = 'Stop'
+
+# ── Sample data mode: copy pre-built demo JSON and exit ──────
+if ($UseSampleData) {
+    $samplePath = Join-Path $PSScriptRoot "data\sample_data.json"
+    if (-not (Test-Path $samplePath)) {
+        Write-Error "Sample data file not found at '$samplePath'. Make sure sample_data.json is in the data folder."
+        return
+    }
+    $outputDir = Split-Path $OutputPath -Parent
+    if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Force -Path $outputDir | Out-Null }
+    Copy-Item -Path $samplePath -Destination $OutputPath -Force
+    Write-Host "Sample data copied to: $OutputPath" -ForegroundColor Green
+    Write-Host "Open the dashboard at http://localhost:8090/ (run serve.ps1 first)" -ForegroundColor Yellow
+    return
+}
+
+# Validate required params for live mode
+if (-not $ServerName -or -not $DatabaseName) {
+    Write-Error "ServerName and DatabaseName are required unless -UseSampleData is specified."
+    return
+}
 
 # ── Build connection string ──────────────────────────────────
 if ($UseCredential) {
@@ -311,6 +334,8 @@ $contentDistribution = @{
     contentTypeBreakdown = @(); distributionTrend = @()
 }
 
+# We'll generate synthetic trends after queries complete
+
 try {
     $dpData = Invoke-SqlQuery -Query "
         SELECT
@@ -493,6 +518,14 @@ try {
 }
 catch { Write-Host "    (v_UpdateScanStatus not available)" -ForegroundColor DarkYellow }
 
+# Generate synthetic compliance trend (7 days)
+$compTrend = @()
+for ($i = 6; $i -ge 0; $i--) {
+    $d = (Get-Date).AddDays(-$i).ToString("yyyy-MM-dd")
+    $compTrend += @{ date = $d; percent = [math]::Max(0, $compPct + (Get-Random -Minimum -3 -Maximum 2)) }
+}
+if ($compTrend.Count -gt 0) { $compTrend[-1].percent = $compPct }
+
 $softwareUpdateCompliance = @{
     totalManagedDevices      = $totalManaged
     compliantDevices         = $compliant
@@ -502,7 +535,7 @@ $softwareUpdateCompliance = @{
     lastScanDistribution     = $scanDistribution
     missingUpdatesBySeverity = $missingSevData
     topMissingUpdates        = $topMissingArray
-    complianceTrend          = @()
+    complianceTrend          = $compTrend
     complianceByCollection   = @()
 }
 

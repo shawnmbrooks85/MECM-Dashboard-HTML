@@ -1,0 +1,199 @@
+{
+  "lastRefresh": "2026-02-15T03:00:00Z",
+  "environment": {
+    "siteName": "OPC",
+    "siteCode": "OPC",
+    "siteServer": "mecm-site-server.corp.local",
+    "siteVersion": "5.00.9128.1007",
+    "dbServer": "mecmopccas.corp.local"
+  },
+  "clientHealth": {
+    "totalDevices": 4502,
+    "activeClients": 4318,
+    "healthyClients": 4102,
+    "unhealthyClients": 216,
+    "inactiveClients": 184,
+    "clientHealthPercent": 91.2,
+    "remediationSuccess": 87,
+    "remediationFailed": 14,
+    "remediationTotal": 101,
+    "healthTrend": [
+      { "date": "2026-02-09", "percent": 89.1 },
+      { "date": "2026-02-10", "percent": 89.8 },
+      { "date": "2026-02-11", "percent": 90.2 },
+      { "date": "2026-02-12", "percent": 90.5 },
+      { "date": "2026-02-13", "percent": 90.9 },
+      { "date": "2026-02-14", "percent": 91.0 },
+      { "date": "2026-02-15", "percent": 91.2 }
+    ],
+    "topIssues": [
+      { "issue": "WMI Repository Corrupt", "count": 62, "severity": "high" },
+      { "issue": "BITS Transfer Failed", "count": 48, "severity": "medium" },
+      { "issue": "Client Certificate Expired", "count": 37, "severity": "critical" },
+      { "issue": "Hardware Inventory Stale (>7d)", "count": 29, "severity": "medium" },
+      { "issue": "Management Point Unreachable", "count": 24, "severity": "high" },
+      { "issue": "CCMExec Service Stopped", "count": 16, "severity": "critical" }
+    ],
+    "osBuildDistribution": [
+      { "os": "Windows 11 23H2", "count": 1820, "percent": 42.1 },
+      { "os": "Windows 11 22H2", "count": 1105, "percent": 25.6 },
+      { "os": "Windows 10 22H2", "count": 892, "percent": 20.6 },
+      { "os": "Windows 10 21H2", "count": 312, "percent": 7.2 },
+      { "os": "Windows Server 2022", "count": 148, "percent": 3.4 },
+      { "os": "Windows Server 2019", "count": 41, "percent": 0.9 }
+    ],
+    "activityBreakdown": {
+      "last24h": 3891,
+      "last48h": 4102,
+      "last7d": 4318,
+      "over30d": 184
+    }
+  },
+  "contentDistribution": {
+    "totalDPs": 25,
+    "healthyDPs": 23,
+    "warningDPs": 1,
+    "errorDPs": 1,
+    "totalPackages": 892,
+    "distributedSuccess": 864,
+    "distributedFailed": 12,
+    "distributedInProgress": 16,
+    "totalContentSizeGB": 2847,
+    "dpGroups": [
+      { "name": "All Distribution Points", "members": 25, "packages": 892, "compliance": 96.8 },
+      { "name": "Branch Office DPs", "members": 12, "packages": 645, "compliance": 94.2 },
+      { "name": "Datacenter DPs", "members": 8, "packages": 892, "compliance": 99.1 },
+      { "name": "Cloud DPs", "members": 5, "packages": 380, "compliance": 97.5 }
+    ],
+    "failedPackages": [
+      { "name": "Microsoft 365 Apps - Monthly Channel", "packageId": "OPC00A12", "type": "Application", "failedDPs": 3, "error": "0x80070070 - Insufficient disk space" },
+      { "name": "Windows 11 23H2 Feature Update", "packageId": "OPC00B34", "type": "Software Update", "failedDPs": 2, "error": "0x80070005 - Access denied" },
+      { "name": "Dell BIOS Update Pack Q1-2026", "packageId": "OPC00C56", "type": "Package", "failedDPs": 1, "error": "0x80004005 - Network timeout" }
+    ],
+    "contentTypeBreakdown": [
+      { "type": "Applications", "count": 234, "sizeGB": 680 },
+      { "type": "Software Updates", "count": 412, "sizeGB": 1420 },
+      { "type": "Packages", "count": 89, "sizeGB": 245 },
+      { "type": "OS Images", "count": 12, "sizeGB": 340 },
+      { "type": "Driver Packages", "count": 34, "sizeGB": 98 },
+      { "type": "Boot Images", "count": 4, "sizeGB": 8 },
+      { "type": "Task Sequences", "count": 18, "sizeGB": 56 }
+    ],
+    "distributionTrend": [
+      { "date": "2026-02-09", "success": 842, "failed": 18, "inProgress": 32 },
+      { "date": "2026-02-10", "success": 848, "failed": 16, "inProgress": 28 },
+      { "date": "2026-02-11", "success": 851, "failed": 15, "inProgress": 26 },
+      { "date": "2026-02-12", "success": 855, "failed": 14, "inProgress": 23 },
+      { "date": "2026-02-13", "success": 858, "failed": 13, "inProgress": 21 },
+      { "date": "2026-02-14", "success": 861, "failed": 12, "inProgress": 19 },
+      { "date": "2026-02-15", "success": 864, "failed": 12, "inProgress": 16 }
+    ]
+  },
+  "softwareUpdateCompliance": {
+    "totalManagedDevices": 4318,
+    "compliantDevices": 3142,
+    "nonCompliantDevices": 1176,
+    "compliancePercent": 72.8,
+    "scanCoverage": 94.6,
+    "lastScanDistribution": {
+      "within24h": 3201,
+      "within48h": 3689,
+      "within7d": 4087,
+      "over7d": 231
+    },
+    "missingUpdatesBySeverity": {
+      "critical": 89,
+      "important": 234,
+      "moderate": 156,
+      "low": 78,
+      "unrated": 42
+    },
+    "topMissingUpdates": [
+      { "title": "2026-02 Cumulative Update for Windows 11 23H2 (KB5053598)", "severity": "Critical", "missing": 412, "released": "2026-02-11" },
+      { "title": "2026-02 Security Update for .NET Framework 4.8.1 (KB5053471)", "severity": "Important", "missing": 389, "released": "2026-02-11" },
+      { "title": "2026-01 Cumulative Update for Windows 10 22H2 (KB5052987)", "severity": "Critical", "missing": 267, "released": "2026-01-14" },
+      { "title": "2026-02 Servicing Stack Update for Windows 11 (KB5053102)", "severity": "Critical", "missing": 198, "released": "2026-02-11" },
+      { "title": "Microsoft Edge Update 122.0.2365.80", "severity": "Important", "missing": 156, "released": "2026-02-06" },
+      { "title": "2026-01 .NET 8.0 Runtime Security Update", "severity": "Important", "missing": 134, "released": "2026-01-14" },
+      { "title": "2025-12 Out-of-band Security Update (KB5051234)", "severity": "Critical", "missing": 89, "released": "2025-12-20" }
+    ],
+    "complianceTrend": [
+      { "date": "2026-02-09", "percent": 68.2 },
+      { "date": "2026-02-10", "percent": 69.5 },
+      { "date": "2026-02-11", "percent": 67.1 },
+      { "date": "2026-02-12", "percent": 69.8 },
+      { "date": "2026-02-13", "percent": 71.0 },
+      { "date": "2026-02-14", "percent": 72.1 },
+      { "date": "2026-02-15", "percent": 72.8 }
+    ],
+    "complianceByCollection": [
+      { "collection": "All Workstations", "total": 3650, "compliant": 2628, "percent": 72.0 },
+      { "collection": "All Servers", "total": 189, "compliant": 176, "percent": 93.1 },
+      { "collection": "Finance Department", "total": 312, "compliant": 298, "percent": 95.5 },
+      { "collection": "Engineering", "total": 890, "compliant": 578, "percent": 64.9 },
+      { "collection": "Remote Workers", "total": 1420, "compliant": 980, "percent": 69.0 },
+      { "collection": "Executive Devices", "total": 45, "compliant": 44, "percent": 97.8 }
+    ]
+  },
+  "softwareUpdateDeployment": {
+    "activeDeployments": 12,
+    "completedDeployments": 45,
+    "failedDeployments": 2,
+    "deployments": [
+      { "name": "2026-02 Security Updates — All Workstations", "collection": "All Workstations", "total": 3650, "installed": 2890, "downloading": 124, "waiting": 312, "failed": 89, "pendingRestart": 235, "status": "active", "deadline": "2026-02-20" },
+      { "name": "2026-02 Cumulative Update — Win11 23H2", "collection": "Windows 11 23H2", "total": 1820, "installed": 1408, "downloading": 67, "waiting": 198, "failed": 42, "pendingRestart": 105, "status": "active", "deadline": "2026-02-22" },
+      { "name": "2026-02 Security Updates — All Servers", "collection": "All Servers", "total": 189, "installed": 176, "downloading": 0, "waiting": 4, "failed": 2, "pendingRestart": 7, "status": "active", "deadline": "2026-02-25" },
+      { "name": ".NET Framework 4.8.1 Update", "collection": "All Systems", "total": 4318, "installed": 3929, "downloading": 34, "waiting": 221, "failed": 56, "pendingRestart": 78, "status": "active", "deadline": "2026-02-28" },
+      { "name": "Edge 122 Deployment", "collection": "All Workstations", "total": 3650, "installed": 3494, "downloading": 12, "waiting": 98, "failed": 23, "pendingRestart": 23, "status": "active", "deadline": "2026-02-18" },
+      { "name": "2026-01 Cumulative Update — Win10 22H2", "collection": "Windows 10 22H2", "total": 892, "installed": 801, "downloading": 0, "waiting": 34, "failed": 45, "pendingRestart": 12, "status": "warning", "deadline": "2026-02-14" }
+    ],
+    "errorCodeBreakdown": [
+      { "code": "0x80070652", "description": "Another install in progress", "count": 89 },
+      { "code": "0x800f0922", "description": "Insufficient system partition space", "count": 56 },
+      { "code": "0x80073712", "description": "Component store corruption", "count": 34 },
+      { "code": "0x80240034", "description": "Update not applicable", "count": 28 },
+      { "code": "0x8024402c", "description": "Connection to WSUS failed", "count": 18 }
+    ],
+    "pendingRestarts": 460,
+    "deploymentSuccessRate": 88.4
+  },
+  "edgeManagement": {
+    "totalEdgeInstalled": 3891,
+    "totalDevicesWithBrowser": 4318,
+    "edgePenetration": 90.1,
+    "defaultBrowserStats": {
+      "edge": 3124,
+      "chrome": 892,
+      "firefox": 198,
+      "other": 104
+    },
+    "edgeVersionDistribution": [
+      { "version": "122.0.2365.80", "channel": "Stable", "count": 2340, "percent": 60.1, "status": "current" },
+      { "version": "122.0.2365.66", "channel": "Stable", "count": 823, "percent": 21.2, "status": "recent" },
+      { "version": "121.0.2277.128", "channel": "Stable", "count": 412, "percent": 10.6, "status": "outdated" },
+      { "version": "120.0.2210.133", "channel": "Stable", "count": 198, "percent": 5.1, "status": "vulnerable" },
+      { "version": "119.0.2151.97", "channel": "Stable", "count": 78, "percent": 2.0, "status": "vulnerable" },
+      { "version": "Other/Older", "channel": "Mixed", "count": 40, "percent": 1.0, "status": "vulnerable" }
+    ],
+    "browserUsageLast30d": {
+      "edge": 62.4,
+      "chrome": 28.1,
+      "firefox": 6.8,
+      "other": 2.7
+    },
+    "vulnerableEdgeClients": 316,
+    "vulnerablePercent": 8.1
+  },
+  "securityOverview": {
+    "overallHealthScore": 78,
+    "riskLevel": "medium",
+    "criticalFindings": [
+      { "finding": "316 devices running vulnerable Edge versions (≤120.x)", "severity": "high", "domain": "edge" },
+      { "finding": "89 devices missing critical February security patches", "severity": "critical", "domain": "updates" },
+      { "finding": "37 devices with expired client certificates", "severity": "critical", "domain": "clients" },
+      { "finding": "460 devices pending restart after update installation", "severity": "medium", "domain": "deployments" },
+      { "finding": "231 devices haven't scanned for updates in 7+ days", "severity": "high", "domain": "updates" },
+      { "finding": "12 content distributions failed — potential missing patches on branch DPs", "severity": "medium", "domain": "content" }
+    ]
+  }
+}
