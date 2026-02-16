@@ -1,4 +1,4 @@
-$root = "D:\MECM-Dashboard-HTML"
+$root = $PSScriptRoot
 $port = 8090
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
@@ -36,7 +36,8 @@ while ($listener.IsListening) {
         $res.StatusCode = 200
         $res.OutputStream.Write($bytes, 0, $bytes.Length)
         Write-Host "$($req.HttpMethod) $path -> 200 ($contentType)"
-    } else {
+    }
+    else {
         $res.StatusCode = 404
         $body = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found: $path")
         $res.ContentLength64 = $body.Length
